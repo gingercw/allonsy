@@ -37,7 +37,7 @@ class Board(db.Model):
     user = db.relationship("User", backref="boards")
 
     def __repr__(self):
-    return f'<Board board_id={self.board_id} title={self.name}>'
+        return f'<Board board_id={self.board_id} title={self.name}>'
 
 class Food(db.Model):
     """Food ideas to pin to the board."""
@@ -54,7 +54,7 @@ class Food(db.Model):
 
     board = db.relationship("Board", backref="food")
     def __repr__(self):
-    return f'<Food food_id={self.food_id} title={self.name}>'
+        return f'<Food food_id={self.food_id} title={self.name}>'
 
 class Hotel(db.Model):
     """Hotel ideas to pin to the board."""
@@ -85,13 +85,29 @@ class Activity(db.Model):
     name = db.Column(db.String)
     url = db.Column(db.String)
     selected = db.Column(db.Boolean, default=False)
-    activity_id = db.Column(db.Integer, db.ForeignKey("boards.board_id"))
+    board_id = db.Column(db.Integer, db.ForeignKey("boards.board_id"))
 
     board = db.relationship("Board", backref="activities")
 
     def __repr__(self):
         return f'<Activity activity_id={self.activity_id} title={self.name}>'
 
+class Photos(db.Model):
+    """Photos from the trip."""
+
+    __tablename__ = "photos"
+
+    photo_id = db.Column(db.Integer,
+                        autoincrement=True,
+                        primary_key=True,)
+    url = db.Column(db.String)
+    caption = db.Column(db.String)
+    board_id = db.Column(db.Integer, db.ForeignKey("boards.board_id"))
+
+    board = db.relationship("Board", backref="photos")
+
+    def __repr__(self):
+        return f'<Photo photo_id={self.photo_id} title={self.name}>'
 
 
 
